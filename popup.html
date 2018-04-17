@@ -1,0 +1,966 @@
+
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <style type="text/css">
+      body {
+        margin: 10px;
+        white-space: nowrap;
+      }
+
+      h1 {
+        font-size: 15px;
+      }
+
+      #container {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+      }
+      button{ cursor:pointer;}
+      ﻿html {
+    height: 100%;
+}
+ 
+body {
+    height: 100%;
+    width: 100%;
+    font-size: 72.5%;
+    font-family: 'Segoe UI';
+    color: #ddd;
+    background-color: #002;
+    margin: 0px;
+    padding: 0px;
+}
+ 
+h4 {
+    margin: 0 0 0 0;
+    background-color: #555;
+    color: #fff;
+}
+ 
+.win-backbutton:hover {
+    background-color: #64991E;
+    color: #ffffff;
+}
+ 
+#spaceStationFinderLogo {
+    position: absolute;
+    top: -32px;
+    left: 0px;
+    background-image: url("../images/SpaceStationFinderLogo.png");
+    height: 215px;
+    width: 223px;
+}
+ 
+/* Splash Screen Specific selectors */
+#spaceStationFinderLogoSplash {
+    position: absolute;
+    top: -32px;
+    left: 0px;
+    background-image: url("../images/SpaceStationFinderLogo.png");
+    height: 215px;
+    width: 223px;
+}
+ 
+#uhaapi {
+    position: relative;
+    text-align: center;
+    margin: auto;
+    top: 200px;
+    bottom: 100px;
+}
+ 
+/* not enough room for UHAAPI credits, chicklets on small devices */
+@media screen and (max-width:420px) {
+    #chicklets, #uhaapi, #spaceStationFinderLogo {
+        display: none;
+    }
+}
+ 
+@media screen and (max-width:514px) {
+    #chicklets2, #tweetViewingInfo, #viewingDirectionInstructions {
+        display: none;
+    }
+}
+ 
+#chicklets {
+    position: absolute;
+    text-align: left;
+    left: 60px;
+    top: 140px;
+    width: 200px;
+}
+ 
+#chicklets2 {
+    position: absolute;
+    right: 10px;
+    top: 140px;
+}
+ 
+#tweetViewingInfo {
+    position: absolute;
+    right: 10px;
+    top: 130px;
+    z-index: 10;
+}
+ 
+    #tweetViewingInfo:hover, #tweetViewingInfo:active {
+        cursor: pointer;
+    }
+ 
+#getVersionsSplash {
+    position: absolute;
+    bottom: 5px;
+    height: 330px;
+    right: 10px;
+    line-height: 2.6em;
+}
+ 
+ 
+#lblLocationNotSetSplash {
+    font-size: 1.6em;
+    width: 400px;
+    margin: auto;
+}
+ 
+.downloadLink {
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    color: #FFFF00;
+    font-size: 1.2em;
+    display: block;
+}
+ 
+.downloadButton {
+    display: none;
+}
+ 
+ 
+#storedLocationContainer {
+    position: absolute;
+    text-align: left;
+    top: 400px;
+    width: 100%;
+}
+ 
+#storedLocations {
+    margin-left: 120px;
+}
+ 
+ul {
+    padding: 0px;
+    margin: 0px;
+    width: 320px;
+    list-style-type: none;
+    background-color: rgba(0,0,0,.1);
+}
+ 
+li {
+    padding-left: 10px;
+    text-align: left;
+    border-right: 1px solid #333;
+    border-left: 1px solid #000;
+    border-top: thin solid #222;
+}
+ 
+.storedLocation {
+    color: #FFFF00;
+    font-size: 1.6em;
+    line-height: 2.0em;
+}
+ 
+    .storedLocation:hover, .storedLocation:active {
+        cursor: pointer;
+        background-color: #003;
+        color: #fff;
+    }
+ 
+ 
+#specialMessage {
+    width: 200px;
+    color: Lime;
+    margin: auto;
+}
+ 
+#viewingDirectionInstructionsContainer {
+    display: none;
+    width: 100%;
+    text-align: center;
+    z-index: -10;
+    position: absolute;
+}
+ 
+/* Get rid of small elements when snapped*/
+@media screen and (max-width:600px) {
+    #viewingDirectionInstructionsContainer, #title, #getVersionsSplash {
+        display: none;
+    }
+ 
+    .yellowLabel, .smallLabel {
+        font-size: .8em;
+    }
+ 
+    #storedLocations {
+        margin-left: 0px;
+    }
+}
+ 
+#viewingDirectionInstructions {
+    margin-left: 50%;
+    text-align: right;
+    position: relative;
+    width: 220px;
+    height: 45px;
+    background-image: url("../images/DirectionInstructions.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    z-index: -10;
+}
+ 
+#viewingDirectionInstructionsText {
+    position: absolute;
+    text-align: left;
+    top: 20px;
+    left: 59px;
+}
+ 
+#lblLocationNotSet {
+    width: 220px;
+    margin: auto;
+}
+/********This whole section is the multi-column search layout for when the screen
+            is greater than 500px *********/
+/********Also stretch out Where on Earth text if we have room*********/
+@media screen and (min-width:650px) {
+    #specialMessage {
+        width: 350px;
+    }
+ 
+    #lblLocationNotSet {
+        width: 500px;
+        font-size: 1.5em;
+        font-weight: bold;
+        margin: auto;
+        padding: 35px 0px 15px 0px;
+    }
+ 
+    .downloadLink {
+        text-align: right;
+        text-decoration: none;
+        color: #ccc;
+        font-size: 1.4em;
+        display: block;
+    }
+ 
+        .downloadLink:hover {
+            color: #FF9201;
+        }
+ 
+        .downloadLink:active {
+            color: #FFFF00;
+        }
+ 
+    .downloadButton {
+        display: inline;
+        position: relative;
+        top: 3px;
+    }
+}
+ 
+/********End multi-column search layout for when the screen
+            is greater than 500px *********/
+ 
+/********Different logo image based on width*********/
+@media screen and (max-width:900px) {
+    #spaceStationFinderLogo {
+        position: absolute;
+        top: -32px;
+        left: 0px;
+        background-image: url("../images/SpaceStationFinderLogo100.png");
+        height: 96px;
+        width: 100px;
+    }
+ 
+    #chicklets {
+        position: absolute;
+        text-align: left;
+        left: 5px;
+        top: 60px;
+        width: 200px;
+    }
+ 
+    #chicklets2 {
+        display: none;
+    }
+}
+ 
+input[type="submit"] {
+    background-color: #0A0;
+    margin-bottom: 20px;
+    width: 200px;
+}
+ 
+#lblClearLocations {
+    color: #FF0;
+}
+ 
+    #lblClearLocations:hover {
+        color: #F00;
+        cursor: pointer;
+    }
+ 
+.pass {
+    color: #777;
+    width: 210px;
+    border-top: 2px solid #444;
+    border-left: 2px solid #444;
+    border-right: 2px solid #222;
+    border-bottom: 2px solid #222;
+    text-align: center;
+    padding: .5em;
+    margin: 0.2em;
+    float: left;
+    background-color: #FFFBEC;
+}
+ 
+.passTime {
+    color: #D00;
+}
+ 
+.time {
+    color: #DD0;
+    line-height: .9em;
+}
+ 
+#directionBar {
+    position: relative;
+}
+ 
+.directionSymbol {
+    float: left;
+    height: 23px;
+    width: 12.5%;
+    text-align: center;
+    line-height: 12px;
+    font-weight: bolder;
+    font-size: 1.2em;
+    color: #ff0;
+    background-color: #4d445c;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #999;
+}
+ 
+#redWhiteMapBorder {
+    width: 100%;
+    height: 4px;
+    background-image: url("../images/redWhiteMapBorder.gif");
+}
+ 
+.centeredDivContainer {
+    text-align: center;
+    position: relative;
+}
+ 
+#maxDirection {
+    position: relative;
+    margin: auto;
+    width: 72px;
+    height: 35px;
+    background-color: #090;
+    color: #fff;
+    border: 2px solid #333;
+    border-top-style: none;
+    z-index: 10;
+}
+ 
+#facingDirection {
+    position: absolute;
+    width: 100%;
+    line-height: 15px;
+}
+ 
+#enterLocation {
+    position: absolute;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+ 
+#directionBarStartDate {
+    color: #fff;
+    top: 2px;
+    font-size: .8em;
+}
+ 
+#startDate, #endDate {
+    color: #000;
+}
+ 
+#lblLocation {
+    color: #777;
+    font-size: 1.2em;
+    font-family: 'Segoe UI';
+}
+ 
+#txtName {
+    border-radius: 4px;
+    background-color: #fffbec;
+    display: block;
+    margin: auto;
+    width: 195px;
+    height: 24px;
+    text-align: center;
+    margin-top:20px;
+}
+ 
+ 
+.message {
+    color: #aac;
+    width: 100%;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+ 
+#lblZip {
+    font-size: .9em;
+}
+ 
+#setLocation {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    display: none;
+}
+ 
+#shareFriendly {
+    position:absolute;
+    top: 240px;
+    right: 100px;
+}
+#lblNewLocation {
+    font-size: .9em;
+    position: relative;
+    top: 64px;
+}
+ 
+#sputnik {
+    background-image: url("../images/Sputnik01.png");
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 85px;
+    width: 100%;
+    text-align: right;
+    position: relative;
+    top: -23px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #7f7;
+    z-index: 10;
+}
+ 
+    #sputnik:hover, #sputnik:active {
+        cursor: pointer;
+        background-image: url('../images/Sputnik04.png');
+    }
+ 
+#saturn {
+    background-image: url('../images/saturn.png');
+    background-repeat: no-repeat;
+    height: 33px;
+    width: 130px;
+    position: absolute;
+    top: 40px;
+    z-index: 20;
+}
+ 
+    #saturn:hover {
+        cursor: pointer;
+        background-image: url("../images/saturnHighlight.png");
+    }
+ 
+    #saturn:active {
+        cursor: pointer;
+        background-image: url("../images/saturnHighlight.png");
+    }
+ 
+#lblPassesInNext24Hrs {
+    position: relative;
+    top: 10px;
+    font-size: 0.8em;
+    color: #7f7;
+}
+ 
+#searchButton {
+}
+ 
+    #searchButton:hover {
+        cursor: pointer;
+    }
+ 
+#resultsContainer {
+    clear: both;
+    width: 480px;
+}
+ 
+#allResultsContainer {
+    display: none;
+    position: relative;
+    top: 15px;
+    left: 200px;
+    font-size: 1.2em;
+    width: 250px;
+}
+ 
+#wikiPageHTML {
+    height: 708px;
+    width: 535px;
+    left: 50px;
+    background-color: #FFFBEC;
+    color: #777777;
+    padding: 10px;
+}
+ 
+#pageGrid {
+    position: relative;
+    background-image: url('../images/EarthWithGlow360.png');
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    height: 100%;
+}
+ 
+#pageGridResults {
+    position: relative;
+    background-image: url('../images/treelineLeft360.png');
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    height: 100%;
+}
+/********Different bottom trees image based on width*********/
+@media screen and (min-width:480px) and (max-width:767px) {
+    #pageGrid {
+        position: relative;
+        background-image: url('../images/EarthWithGlow480.png');
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        height: 100%;
+    }
+ 
+    #pageGridResults {
+        position: relative;
+        background-image: url('../images/treelineLeft360.png');
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        height: 100%;
+    }
+}
+ 
+@media screen and (min-width:768px) and (max-width:1023px) {
+    #pageGrid {
+        position: relative;
+        background-image: url('../images/EarthWithGlow768.png');
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        height: 100%;
+    }
+ 
+    #pageGridResults {
+        position: relative;
+        background-image: url('../images/treelineLeft768.png');
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        height: 100%;
+    }
+}
+ 
+@media screen and (min-width:1024px) {
+    #pageGrid {
+        position: relative;
+        background-image: url('../images/EarthWithGlow1024.png');
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        height: 100%;
+    }
+ 
+    #pageGridResults {
+        position: relative;
+        background-image: url('../images/treelineLeft1024.png');
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        height: 100%;
+    }
+}
+ 
+/********End Different bottom trees image based on width*********/
+ 
+#currentPass {
+    display: none;
+    width: 100%;
+    text-align: center;
+}
+ 
+#largeViewingInfo {
+    position: absolute;
+    top: 30px;
+    left: 150px;
+    font-size: 1.6em;
+    text-align: left;
+    background-color: rgba(0,0,0,.1);
+    padding: 20px 10px 10px 10px;
+    border-right: 1px solid #333;
+    border-left: 1px solid #000;
+    border-bottom: thin solid #222;
+}
+ 
+#degreesGrid {
+    width: 100%;
+    text-align: left;
+    position: absolute;
+    top: 40px;
+    color: #777;
+    font-size: .9em;
+}
+ 
+    #degreesGrid div {
+        padding: 0px 90px 15px 0px;
+        background: url("../images/degreeLines.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        text-align: center;
+        color: #aaa;
+    }
+ 
+#locationStatus {
+    position: absolute;
+    float: none;
+    bottom: 50px;
+    right: 30px;
+    font-size: 1.2em;
+    text-align: right;
+    width: 100%;
+}
+/********Different DegreesGrid and LocationStatus leading based on Height*********/
+ 
+@media screen and (min-height:460px) and (max-height:599px) {
+    #degreesGrid div {
+        padding: 0px 90px 30px 0px;
+        background: url("../images/degreeLines.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        text-align: center;
+        color: #aaa;
+    }
+}
+ 
+@media screen and (min-height:600px) and (max-height:859px) {
+    #degreesGrid div {
+        padding: 0px 90px 50px 0px;
+        background: url("../images/degreeLines.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        text-align: center;
+        color: #aaa;
+    }
+}
+ 
+@media screen and (min-height:860px) and (max-height:1023px) {
+    #degreesGrid div {
+        padding: 0px 90px 55px 0px;
+        background: url("../images/degreeLines.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        text-align: center;
+        color: #aaa;
+    }
+}
+ 
+@media screen and (min-height:1024px) {
+    #degreesGrid div {
+        padding: 0px 90px 69px 0px;
+        background: url("../images/degreeLines.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        text-align: center;
+        color: #aaa;
+    }
+}
+ 
+/********End Different DegreesGrid leading based on width*********/
+ 
+.spaceStationStage {
+    height: 42px;
+    width: 33%;
+    float: left;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    text-align: center;
+}
+ 
+ 
+.spaceStationStageCounterClockwise {
+    height: 42px;
+    width: 33%;
+    float: right;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    text-align: center;
+}
+ 
+#spaceStationMax {
+    background: url("../images/spaceStation.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+ 
+#spaceStationStart {
+    background: url("../images/spaceStationAppearing.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+ 
+#spaceStationEnd {
+    background: url("../images/spaceStationVanishing.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+ 
+.stationDirection{
+    font-family:Verdana;
+    font-weight:bold;
+    font-size:60px;
+    color:#334;
+    position:absolute;
+    top:-80px;
+    text-align:center;
+    width:100%;
+    z-index:-1;
+}
+ 
+@media screen and (max-width:550px) {
+    .stationDirection{
+    font-size:32px;
+    }
+}
+ 
+#startHereArrow {
+    position: absolute;
+    top: -40px;
+    margin: auto;
+    width: 100%;
+}
+ 
+#startTime {
+    padding-top: 10px;
+}
+ 
+#startTime, #maxTime, #endTime {
+    position: relative;
+    top: -5px;
+}
+ 
+.smallLabel {
+    font-size: 1.2em;
+}
+ 
+.dimLabel {
+    position: relative;
+    top: -20px;
+    color: #999;
+}
+ 
+.briteLabel {
+    position: relative;
+    top: -20px;
+    color: #F00;
+    font-weight: bold;
+}
+ 
+.yellowLabel {
+    font-size: 1.2em;
+    color: #FF0;
+}
+ 
+#friendlyMessage {
+    font-size:1.7em;
+    position: absolute;
+    top: 180px;
+    color:#f71e00;
+}
+ 
+.localTimeMessage {
+    margin: auto;
+    width: 280px;
+    color: #f00;
+}
+ 
+#ad {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+ 
+#ad2 {
+    position: absolute;
+    bottom: 5px;
+}
+ 
+/* bag the ad on the results screen if it's too narrow */
+@media screen and (max-width:419px) {
+    #ad2 {
+        display: none;
+    }
+}
+ 
+.button {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+    font-family: 'Segoe UI';
+    display: inline-block;
+    color: #FFFFFF;
+    vertical-align: baseline;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    padding: .5em 2em .55em;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+    border-radius: .5em;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+ 
+    .button:hover, .button:active {
+        cursor: pointer;
+    }
+ 
+.green {
+    background: #64991E;
+}
+ 
+    .green:hover, green:active {
+        background: #538018;
+    }
+ 
+.orange {
+    background: #f50;
+}
+ 
+    .orange:hover, orange:active {
+        background: #f90;
+    }
+ 
+.help {
+    position: relative;
+    top: -15px;
+    background-color: #2F2;
+    color: #000000;
+    font-size: 1.3em;
+    font-weight: bold;
+    -webkit-border-radius: .5em;
+    -moz-border-radius: .5em;
+    border-radius: .5em;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-left: 50px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+ 
+.suppressHelp {
+    top: 0px;
+    background-color: #F22;
+    color: #fff;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+    margin-right: 10px;
+}
+ 
+.helpBox {
+    background-color: #000022;
+    z-index: 21;
+    top: -70px;
+    width: 70%;
+    height: 190px;
+    overflow: auto;
+    border-color: #222222;
+    border-style: solid;
+    border-width: thin;
+    padding: 8px;
+    position: absolute;
+    text-align: left;
+    filter: alpha(opacity=80);
+    -ms-filter: alpha(opacity=80);
+    opacity: 0.8;
+}
+ 
+#appearsHelp {
+    display: none;
+}
+ 
+#maxHelp {
+    display: none;
+}
+ 
+#endsHelp {
+    display: none;
+}
+ 
+#waitAnimContainer {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding-top: 350px;
+    opacity: 0.1;
+    margin: auto;
+    text-align: center;
+    z-index: -20;
+    color: #2F2;
+    font-weight: bold;
+}
+ 
+.btn:hover, .btn:active {
+    cursor: pointer;
+}
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+    <script src="popup.js"></script>
+  </head>
+
+  <body>
+            <div style="position: relative; top: 50px; height: 400px; width: 400px; margin: auto">
+                <form id="form1" style="text-align: center">
+                    <div id="lblLocationNotSet" class="message">
+                        Step 1: What is your Instagram name?
+                    </div>
+                    <div id="specialMessage">
+                        <span id="lblSpecialMessage" style="color: #FFFF00;"></span>
+                    </div>
+                    <input id="txtName" type="text" placeholder="Your Instagram Name"/>
+                    <div>
+                        <button id="goButton" class="button orange">
+                            Go to my Instagram page.
+                        </button>
+                    </div>
+            <button id="doLinksExist" class="button orange" style="display:none;text-align:center;">Do Links Exist</button>
+            <button id="showFollowing"  class="button orange"  style="display:none;text-align:center;">Show Following</button>
+            <button id="closeDialog" class="button orange" style="display:none;text-align:center;">Close Dialog</button>
+                </form>
+            </div>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+{
+"manifest_version":2,
+
+"name":"Who's not following me back on Instagram?",
+"description":"This extension allows you to see which of the people you follow on Instagram that don't follow you back - with an option to unfollow them.",
+"version":"1.0",
+"browser_action":{
+        "default_icon":"icon.png",
+        "default_popup":"popup.html",
+        "default_title": "Find who's not following you back on Instagram"
+    },
+    
+  "content_scripts": [
+    {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"],
+        "run_at": "document_end"
+    }
+    ],
+"permissions":[ "activeTab", "storage", "tabs", "https://*/*", "<all_urls>" ]
+}
